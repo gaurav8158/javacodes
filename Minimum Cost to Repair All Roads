@@ -1,0 +1,71 @@
+import java.util.*;
+
+class Solution {
+	public int minDistNode(int n, int[] dist, boolean[] visited) {
+		int val = Integer.MAX_VALUE;
+		int pos = 0;
+
+		for(int i = 0; i < n; i++) {
+			if(visited[i] == false && dist[i] < val) {
+				val = dist[i];
+				pos = i;
+			}
+		}
+
+		return pos;
+	}
+
+    public int MinCost(int[][] cost, int n) {
+        // Write your code here
+		int parent[]=new int[n];
+		int dist[]=new int[n];
+		boolean visited[]=new boolean[n];
+
+		for(int i = 0; i < n; i++) {
+			dist[i] = Integer.MAX_VALUE;
+			visited[i] = false;
+		}
+
+		parent[0] = -1;
+		dist[0] = 0;
+
+		for(int i = 0; i < n-1; i++) {
+			// first step : find the node not visited and least dist
+			int u = minDistNode(n, dist, visited);
+
+			// second step : mark it visited
+			visited[u] = true;
+
+			// update the neighbours dist and parent
+			for(int v = 0; v < n; v++) {
+				if(cost[u][v] > 0 && visited[v] == false && cost[u][v] < dist[v]) {
+					dist[v] = cost[u][v];
+					parent[v] = u;
+				}
+			}
+		}
+
+		int ans = 0;
+		for(int i = 1; i < n; i++) {
+			ans += cost[parent[i]][i];
+		}
+
+		return ans;
+		
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[][] c = new int[n][n];
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++)
+                c[i][j] = sc.nextInt();
+        }
+
+	    Solution Obj = new Solution();
+        System.out.println(Obj.MinCost(c, n));
+    }
+}
