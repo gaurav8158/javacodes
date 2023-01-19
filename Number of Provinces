@@ -1,0 +1,40 @@
+class Solution {
+    static int numProvinces(ArrayList<ArrayList<Integer>> adj, int V) {
+        // code here
+        ArrayList<ArrayList<Integer>> adjL = new ArrayList<ArrayList<Integer>>();
+        for(int i=0;i<V;i++){
+          adjL.add(new ArrayList<Integer>()); 
+        }
+        for(int i=0;i<V;i++){
+            for(int j=0;j<V;j++){
+                if(adj.get(i).get(j)==1 && i!=j){
+                    adjL.get(i).add(j);
+                    adjL.get(j).add(i);
+                }
+            }
+        }
+        int vis[] = new int[V];
+      
+        for(int i=0;i<V;i++){
+            vis[i]=0;
+        }
+        int count = 0;
+        for(int i=0;i<V;i++){
+           
+            if(vis[i]==0){
+                 count++;
+                dfs(i,adjL,vis);
+            }
+        }
+        return count;
+    }
+    
+    static void dfs(int v,ArrayList<ArrayList<Integer>> adj, int vis[]){
+    vis[v] = 1;
+    for(int i : adj.get(v)){
+        if(vis[i]==0){
+            dfs(i,adj,vis);
+        }
+    }
+    }
+};
