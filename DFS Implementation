@@ -1,0 +1,50 @@
+import java.util.*;
+
+class Solution {
+	static void dfs(int x,ArrayList<ArrayList<Integer>> adj,boolean vis[]){
+		if(vis[x]==true) return;
+		vis[x]=true;
+		System.out.print(x+" ");
+		for(int i=0;i<adj.get(x).size();i++){
+		dfs(adj.get(x).get(i),adj,vis);	
+		}
+	}
+    public static void DFSTraversal(List<List<Integer>> edges, int n){
+		boolean vis[] =new boolean[n];
+		ArrayList<ArrayList<Integer>> adjL = new ArrayList<ArrayList<Integer>>();
+	for(int i = 0; i < n; i++) {
+			adjL.add(new ArrayList<Integer>());
+		}
+		for(int i=0;i<edges.size();i++){
+	int x=edges.get(i).get(0), y=edges.get(i).get(1);
+				adjL.get(x).add(y);
+				adjL.get(y).add(x);
+		}
+		for(int i=0;i<n;i++){
+			vis[i]=false;
+		}
+		for(int i = 0; i < n; i++) {
+			Collections.sort(adjL.get(i));
+		}
+
+	dfs(0,adjL,vis);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int e = sc.nextInt();
+        List<List<Integer>> ed = new ArrayList<>();
+        for (int i = 0; i < e; i++) {
+            List<Integer> l = new ArrayList<>();
+            l.add(sc.nextInt());
+            l.add(sc.nextInt());
+            ed.add(l);
+        }
+
+        Solution ob = new Solution();
+        ob.DFSTraversal(ed, n);
+    }
+}
