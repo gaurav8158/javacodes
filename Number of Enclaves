@@ -1,0 +1,67 @@
+public static int dfs(int[][] grid, int i, int j, int m, int n, boolean[][] vis) {
+		if(i < 0 || i >= m || j < 0 || j >= n || grid[i][j] == 0 || vis[i][j] == true)
+			return 0;
+
+		vis[i][j] = true;
+
+		int up, down, left, right;
+		// call on the up node
+		up = dfs(grid, i-1, j, m, n, vis);
+		// call on the down node
+		down = dfs(grid, i+1, j, m, n, vis);
+		// call on the left node
+		left = dfs(grid, i, j-1, m, n, vis);
+		// call on the right node
+		right = dfs(grid, i, j+1, m, n, vis);
+
+		return 1 + up + down + left + right;
+	}
+	
+  public static int numEnclaves(int[][] grid) {
+    // your code here
+	  int m = grid.length;
+	  int n = grid[0].length;
+
+	  int total = 0;
+
+	  // we calculate total 1s in the matrix
+	  for(int i = 0; i < m; i++) {
+		  for(int j = 0; j < n; j++) {
+			  if(grid[i][j] == 1) total++;
+		  }
+	  }
+	  
+	  boolean[][] vis = new boolean[m][n];
+
+	  int count = 0;
+
+	  // walk on the top border
+	  for(int j = 0; j < n; j++) {
+		  if(grid[0][j] == 1 && vis[0][j] == false) {
+			  count += dfs(grid, 0, j, m, n, vis);
+		  }
+	  }
+
+	  // walk on the bottom border
+	  for(int j = 0; j < n; j++) {
+		  if(grid[m-1][j] == 1 && vis[m-1][j] == false) {
+			  count += dfs(grid, m-1, j, m, n, vis);
+		  }
+	  }
+
+	  // walk on the left border
+	  for(int i = 0; i < m; i++) {
+		  if(grid[i][0] == 1 && vis[i][0] == false) {
+			  count += dfs(grid, i, 0, m, n, vis);
+		  }
+	  }
+	  
+	  // walk on the right border
+	  for(int i = 0; i < m; i++) {
+		  if(grid[i][n-1] == 1 && vis[i][n-1] == false) {
+			  count += dfs(grid, i, n-1, m, n, vis);
+		  }
+	  }
+
+	  return total - count;
+  }
